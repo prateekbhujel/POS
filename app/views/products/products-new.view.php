@@ -20,7 +20,7 @@
 			  <span class="input-group-text">Qty:</span>
 			  <input name="qty" value="1" type="number" class="form-control" placeholder="Quantity" aria-label="Quantity">
 			  <span class="input-group-text">Amount:</span>
-			  <input name="amount" value="0.00" step="0.05" type="number" class="form-control" placeholder="Amount" aria-label="Amount">
+			  <input name="amount" value="0.00" step="1" limit="0" type="number" class="form-control" placeholder="Amount" aria-label="Amount">
 			</div>
 
 			<div class="mb-3">
@@ -35,6 +35,3 @@
 	</div>
 
 <?php require views_path('partials/footer');?>
-
-
-
