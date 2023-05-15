@@ -35,6 +35,3 @@
 	</div>
 
 <?php require views_path('partials/footer');?>
-
-
-
