@@ -11,22 +11,35 @@
 		 
 			<div class="mb-3">
 			  <label for="exampleFormControlInput1" class="form-label">Username</label>
-			  <input type="text" name="username" class="form-control" id="exampleFormControlInput1" placeholder="Username">
+			  <input value="<?=set_value('username')?>" name="username" type="text" class="form-control <?=!empty($errors['username']) ? 'border-danger':''?>" id="exampleFormControlInput1" placeholder="Username">
+				<?php if(!empty($errors['username'])):?>
+					<small class="text-danger"><?=$errors['username']?></small>
+				<?php endif;?>
 			</div>
 			
 			<div class="mb-3">
 			  <label for="exampleFormControlInput1" class="form-label">Email address</label>
-			  <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+			  <input value="<?=set_value('email')?>" name="email" type="email" class="form-control  <?=!empty($errors['email']) ? 'border-danger':''?>" id="exampleFormControlInput1" placeholder="name@example.com">
+				<?php if(!empty($errors['email'])):?>
+					<small class="text-danger"><?=$errors['email']?></small>
+				<?php endif;?>
 			</div>
 
 			<div class="input-group mb-3">
 			  <span class="input-group-text" id="basic-addon1">Password</span>
-			  <input type="text" name="password"class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+			  <input value="<?=set_value('password')?>" name="password" type="text" class="form-control  <?=!empty($errors['password']) ? 'border-danger':''?>" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+				<br>
+				<?php if(!empty($errors['password'])):?>
+					<small class="text-danger col-12"><?=$errors['password']?></small>
+				<?php endif;?>
 			</div>
 
 			<div class="input-group mb-3">
 			  <span class="input-group-text" id="basic-addon1">Retype Password</span>
-			  <input type="text" name="password_retype"class="form-control" placeholder="Retype Password" aria-label="Username" aria-describedby="basic-addon1">
+			  <input value="<?=set_value('password_retype')?>" name="password_retype" type="text" class="form-control  <?=!empty($errors['password_retype']) ? 'border-danger':''?>" placeholder="Retype Password" aria-label="Username" aria-describedby="basic-addon1">
+				<?php if(!empty($errors['password_retype'])):?>
+					<small class="text-danger col-12"><?=$errors['password_retype']?></small>
+				<?php endif;?>
 			</div>
 
 			<br>
