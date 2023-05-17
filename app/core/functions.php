@@ -31,8 +31,17 @@
     {
         return htmlspecialchars($str);
     }
+    
+    
+    function redirect($page)
+    {
+       
+        header("Location: index.php?pg=" .$page);
+       die();
+    
+    }
 
-
+    
     function db_connect()
     {
         $DBNAME = "pos_db"; 
@@ -53,9 +62,10 @@
         }
         
         return $con; 
-
+        
     }
 
+   
     function query($query, $data = array() )
     {
         $con = db_connect();
@@ -76,6 +86,8 @@
         return false;
     }
 
+    
+    
     function allowed_columns($data, $table)
     {
         if($table == 'users')
@@ -101,6 +113,8 @@
         }
     }
 
+    
+    
     function insert($data, $table)
     {
         
@@ -115,6 +129,8 @@
         query($query, $clean_array);
     }    
     
+   
+   
     function validate($data, $table)
     {
 
@@ -165,6 +181,8 @@
         return $errors;
     }
 
+    
+    
     function set_value($key, $default = '')
     {
         if(!empty($_POST[$key])) 
@@ -174,4 +192,12 @@
     
         return $default;
     }
+
+    
+    function authenicate($row)
+    {
+        
+        $_SESSION['USER'] = $row;
+    }
+
     
