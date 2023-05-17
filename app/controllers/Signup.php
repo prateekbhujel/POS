@@ -10,11 +10,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     $errors = validate($_POST, 'users');
     if(empty($errors))
     {
+        
+        $_POST['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
         insert($_POST, 'users');
 
-        authenicate($_POST);
-        
-        redirect('home');
+        redirect('login');
     }
 
 }

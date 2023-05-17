@@ -128,6 +128,20 @@
 
         query($query, $clean_array);
     }    
+
+    function where($data, $table)
+    {
+        $keys = array_keys($data);
+
+        $query = "select * from $table where ";
+
+        foreach ($keys as $key) {
+            $query .= "$key = :$key && ";
+        }
+        $query = trim($query,'&& ');
+
+        return query($query, $data);
+    }    
     
    
    
@@ -200,4 +214,13 @@
         $_SESSION['USER'] = $row;
     }
 
+
+    function auth($column)
+    {
+        if(!empty($_SESSION['USER'][$column])){
+            return $_SESSION['USER'][$column];
+        }
+    
+        return "Unknown";
+    }
     
