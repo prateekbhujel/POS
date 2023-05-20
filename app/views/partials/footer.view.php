@@ -1,4 +1,7 @@
     </div>
+    <footer>
+	<center class="my-5">Created by <a target="_blank" href="https://www.twitter.com/prateekbhujel" class="link-success">Pratik Bhujel</a> © <?=date('Y')?> . All Rights and Services.</center>
+</footer>
 </body>
 
     <script src="assets/js/bootstrap.min.js"></script>

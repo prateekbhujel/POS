@@ -30,12 +30,12 @@
 
 			<br>
 			<button class="btn btn-danger float-end">Save</button>
-			<button type="button" class="btn btn-primary">Cancel</button>
+
+			<a href="index.php?pg=admin&tab=products">
+				<button type="button" class="btn btn-primary">Cancel</button>
+			</a>
 		</form>
 	</div>
 
-<<<<<<< HEAD
 <?php require views_path('partials/footer');?>
-=======
-<?php require views_path('partials/footer');?>
->>>>>>> e2b4716e47ff593b05e180130ecf522d9000d5f5
+
