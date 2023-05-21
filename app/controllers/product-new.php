@@ -7,6 +7,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     $product = new Product();
     
     $_POST['date'] = date("Y-m-d H:i:s");
+    $_POST['user_id'] = auth("id");
     $_POST['barcode'] = empty($_POST['barcode']) ? $product->generate_barcode() : $_POST['barcode'];
 
     if(!empty($_FILES))
@@ -17,6 +18,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     $errors = $product->validate($_POST);
     if(empty($errors))
     {
+        $folder ="uploads/";
+        if(!file_exists($folder))
+        {
+            mkdir($folder, 0777, true); // Make a folder incase of not exising file
+        }
+        
+        //Move the uploaded file 
+        $ext = strtolower(pathinfo($_POST['image']['name'], PATHINFO_EXTENSION)); //getting the extension of the file
+
+        $destination = $folder . $product->generate_filename($ext);
+
+        move_uploaded_file($_POST['image']['tmp_name'], $destination);
+        $_POST['image'] = $destination; //Creates a string  
 
         $product->insert($_POST);
 
