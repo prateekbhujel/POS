@@ -29,8 +29,13 @@
                 <td><?=esc($product['date'])?></td>
 
                 <td>
-                    <button class="btn btn-primary btn-sm btn-xs me-1">Edit</a>
-                    <button class="btn btn-danger btn-sm">Delete</a>
+                    <a href="index.php?pg=product-edit&id=<?=$product['id']?>">
+                        <button class="btn btn-warning btn-sm btn-xs me-1"><i class="fa fa-edit"></i></button>
+                    </a>
+                    
+                    <a href="index.php?pg=product-delete&id=<?=$product['id']?>">
+                        <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                    </a>
                 </td>
             </tr>
             <?php endforeach;?>

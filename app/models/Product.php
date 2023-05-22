@@ -1,104 +1,101 @@
-<?php
+<?php 
 
-/*
-* Product Class
-*/
+
+/**
+ * products class
+ */
 class Product extends Model
 {
+	
+	protected $table = "products";
 
-    protected $table = 'products';
+	protected $allowed_columns = [
 
-    protected $allowed_columns= [
-                'barcode',
-                'user_id',
-                'description',
-                'qty',
-                'amount',
-                'image',
-                'date',
-                'views',
-    ];
-
-
-/*              This Function is Used to validation             */
-    
-    public function validate($data)
-    {
-
-        $errors = [];
-    
-/*                  Check Description                              */
-        if(empty($data['description']))
-        {
-            $errors['description'] = "Product description is required";
-        }else
-        if(!preg_match('/[a-zA-Z0-9 _\-\$&\(\)]+/', $data['description']))
-        {
-            $errors['description'] ="only letters and spaces allowed in description";
-        }
+				'barcode',
+				'user_id',
+				'description',
+				'qty',
+				'amount',
+				'image',
+				'date',
+				'views',
+			];
 
 
-/*                  Check Quantity                                 */
-           
-        if(empty($data['qty']))
-        {
-            $errors['qty'] = "Product Quantity is required";
-        }else
-        if(!preg_match('/^[0-9]+$/', $data['qty']))
-        {
-            $errors['qty'] ="Quantity must be number !";
-        }
+ 	public function validate($data, $id = null)
+	{
+		$errors = [];
 
-/*                  Check Amount                                */
-        if(empty($data['amount']))
-        {
-        $errors['amount'] = "Product Amount is required";
-        }else
-        if(!preg_match('/^[0-9].+$/', $data['amount']))
-        {
-        $errors['amount'] ="Amount must be number !";
-        }  
+			//check description
+			if(empty($data['description']))
+			{
+				$errors['description'] = "Product description is required";
+			}else
+			if(!preg_match('/[a-zA-Z0-9 _\-\&\(\)]+/', $data['description']))
+			{
+				$errors['description'] = "Only letters allowed in description";
+			}
 
-/*                  Check Image                                        */
+			//check qty
+			if(empty($data['qty']))
+			{
+				$errors['qty'] = "Product quantity is required";
+			}else
+			if(!preg_match('/^[0-9]+$/', $data['qty']))
+			{
+				$errors['qty'] = "quantity must be a number";
+			}
 
-        $max_size = 5;//5MB
-        $size = $max_size * (1024 * 1024) ;//Converting to MB
-        if(empty($data['image']))
-        {
-        $errors['Image'] = "Product Image is required";
-        }else
-        if(!($data['image']['type'] == "image/jpeg" || $data['image']['type'] == "image/jpg" || $data['image']['type'] == "image/png" || $data['image']['type'] == "image/webp"))
-        {
-        $errors['image'] ="Image must be valid JPEG, PNG or WEBP Format !";
-        }else
-        if($data['image']['error'] > 0)
-        {
-            $errors['image'] = "The submitted Image Failed to Upload ! Error NO: " .$data['image']['error'];
-        }else
-        if($data['image']['size'] > $size)
-        {
-            $errors['image'] = "The Image must be lower than " . $max_size . "MB";
-        }
+			//check amount
+			if(empty($data['amount']))
+			{
+				$errors['amount'] = "Product amount is required";
+			}else
+			if(!preg_match('/^[0-9.]+$/', $data['amount']))
+			{
+				$errors['amount'] = "amount must be a number";
+			}
 
+			//check image
+			$max_size = 4;//mbs
+			$size = $max_size * (1024 * 1024);
 
-    return $errors;
-    
-    }
+			if(!$id || ($id && !empty($data['image']))){
 
-/*      This Function Generates Random number                    */
-    public function generate_barcode()
-    {
-        return "2222" . rand(1000, 9999999999);
-    }
+				if(empty($data['image']))
+				{
+					$errors['image'] = "Product image is required";
+				}else
+				if(!($data['image']['type'] == "image/jpeg" || $data['image']['type'] == "image/png"))
+				{
+					$errors['image'] = "Image must be a valid JPEG or PNG";
+				}else
+				if($data['image']['error'] > 0)
+				{
+					$errors['image'] = "The image failed to upload. Error No.".$data['image']['error'];
+				}else
+				if($data['image']['size'] > $size)
+				{
+					$errors['image'] = "The image size must be lower than ".$max_size."Mb";
+				}
+			}
 
+			
+		return $errors;
+	}
 
-/*            File Generator                                      */
+	public function generate_barcode()
+	{
 
-        public function generate_filename($ext = "jpg")
-        {
-            // Generates unique Name for file
+		return "2222" . rand(1000,999999999);
+	}
 
-            //Just in case Hash Matches 
-            return hash ("sha1", rand(1000, 9999999999)) . "__" . rand(1000, 99999). "." . $ext;
-        }
+	public function generate_filename($ext = "jpg")
+	{
+
+		return hash("sha1",rand(1000,999999999))."_".rand(1000,9999).".".$ext;
+	}
+
+	
+
 }
