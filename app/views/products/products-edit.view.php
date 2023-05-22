@@ -49,14 +49,14 @@
 			<br>
 			<button class="btn btn-success float-end"><i class="fa fa-check fs-5"></i></button>
 			<a href="index.php?pg=admin&tab=products">
-				<button type="button" class="btn btn-primary"><i class="fa fa-times fs-5"></i></button>
+				<button type="button" class="btn btn-secondary"><i class="fa fa-window-close fs-5"></i></button>
 			</a>
 		</form>
 		<?php else:?>
 			That product was not found
 			<br><br>
 			<a href="index.php?pg=admin&tab=products">
-				<button type="button" class="btn btn-primary">Back to products</button>
+				<button type="button" class="btn btn-primary">Back to Products Lists</button>
 			</a>
 
 		<?php endif;?>

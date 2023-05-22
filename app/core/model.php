@@ -65,6 +65,18 @@ class Model extends Database
         $db->query($query, $clean_array);
     } 
     
+    /* Deletes the data from Table */
+	public function delete($id)
+	{
+
+		$query = "delete from $this->table where id = :id limit 1";
+		$clean_array['id'] = $id;
+
+		$db = new Database;
+		$db->query($query,$clean_array);	
+
+	}
+
     /* Returns the array and finds where the data is : */
 
     public function where($data)
