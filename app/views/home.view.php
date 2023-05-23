@@ -138,14 +138,22 @@
 		</div>
 	</div>	
 
+<script>
+
+	get_date(); //Calling the data 
+	function  get_data()
+	{
+		var ajx = new XMLHttpRequest();
+
+		ajx.addEventListener('readystatechange', function(e)
+		{
+			console.log( ajx.responseText);
+		});
+		ajx.open('post', '', true);
+		ajx.send();
+		ajx.close()
+	}
+
+</script>
 
 <?php require views_path('partials/footer');?>
-
-<!-- Nepali datepicker example  -->
-    <!-- <p>
-            <input
-                type="date"
-                id="nepali-datepicker"
-                placeholder="Select Nepali Date"
-            />
-        </p> -->

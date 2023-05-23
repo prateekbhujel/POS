@@ -8,23 +8,23 @@
 			
 			<div class="mb-3">
 			  <label for="productControlInput1" class="form-label">Product description</label>
-			  <input name="description" type="text" class="form-control <?=!empty($errors['description']) ? 'border-danger':''?>" id="productControlInput1" placeholder="Product description">
+			  <input name="description" type="text" value="<?=isset($_POST['description'])?$_POST['description'] : ''?>"class="form-control <?=!empty($errors['description']) ? 'border-danger':''?>" id="productControlInput1" placeholder="Product description">
 			  	<?php if(!empty($errors['description'])):?>
 					<small class="text-danger"><?=$errors['description']?></small>
 				<?php endif;?>
 			</div>
 			
 			<div class="mb-3">
-			  <label for="barcodeControlInput1" class="form-label">Barcode <small class="text-muted">(optional)</small></label>
-			  <input name="barcode" type="text" class="form-control <?=!empty($errors['barcode']) ? 'border-danger':''?>" id="barcodeControlInput1" placeholder="Product barcode">
+			  <label for="barcodeControlInput1" class="form-label">Barcode <small class="text-muted">(optional) Automated	</small></label>
+			  <input name="barcode" type="text" value = "<?=isset($_POST['barcode'])?$_POST['barcode'] : ''?>" class="form-control <?=!empty($errors['barcode']) ? 'border-danger':''?>" id="barcodeControlInput1" placeholder="Product barcode">
 			</div>
 
 			<div class="input-group mb-3">
 			  <span class="input-group-text">Qty:</span>
-			  <input name="qty" value="1" type="number" class="form-control <?=!empty($errors['qty']) ? 'border-danger':''?>" placeholder="Quantity" aria-label="Quantity">
+			  <input name="qty" value="<?=isset($_POST['qty'])?$_POST['qty'] : 1?>" type="number" class="form-control <?=!empty($errors['qty']) ? 'border-danger':''?>" placeholder="Quantity" aria-label="Quantity">
 			  
 			  <span class="input-group-text">Amount:</span>
-			  <input name="amount" value="0.00" step="1" limit="0" type="number" class="form-control <?=!empty($errors['amount']) ? 'border-danger':''?>" placeholder="Amount" aria-label="Amount">
+			  <input name="amount" value="<?=isset($_POST['amount'])?$_POST['amount'] : 0?>" step="1" limit="0" type="number" class="form-control <?=!empty($errors['amount']) ? 'border-danger':''?>" placeholder="Amount" aria-label="Amount">
 
 			</div>
 
