@@ -11,41 +11,8 @@
 			<div class="js-products d-flex" style="flex-wrap: wrap;height: 90%;overflow-y: scroll;">
 				
 				<!--card-->
-				<div class="card m-2 border-0" style="min-width: 180px;max-width: 180px;">
-					<a href="#">
-						<img src="assets/images/image.jpg" class="w-100 rounded border">
-					</a>
-					<div class="p-2" style="font-size:20px">
-						<div class="text-muted">COFFEE SOFT DRINK</div>
-						<div class="" style="font-size:20px"><b>NPR 500</b></div>
-					</div>
-				</div>
+				
 				<!--end card-->
-
-				<!--card-->
-				<div class="card m-2 border-0" style="min-width: 180px;max-width: 180px;">
-					<a href="#">
-						<img src="assets/images/caramel-moolatte.png" class="w-100 rounded border">
-					</a>
-					<div class="p-2" style="font-size:20px">
-						<div class="text-muted">CARAMEL MOOLATTE</div>
-						<div class="" style="font-size:20px"><b>NPR 1000</b></div>
-					</div>
-				</div>
-				<!-- end card-- video 11 2 mins> -->
-
-				<!--card-->
-				<div class="card m-2 border-0" style="min-width: 180px;max-width: 180px;">
-					<a href="#">
-						<img src="assets/images/wave.jpg" class="w-100 rounded border">
-					</a>
-					<div class="p-2">
-						<div class="text-muted">WAVE DRINK</div>
-						<div class="" style="font-size:20px"><b>NPR 1500</b></div>
-					</div>
-				</div>
-				<!--end card-->
-
 				
 			</div>
 		</div>
@@ -140,19 +107,66 @@
 
 <script>
 
-	get_date(); //Calling the data 
-	function  get_data()
+	function send_data(data)
 	{
-		var ajx = new XMLHttpRequest();
 
-		ajx.addEventListener('readystatechange', function(e)
-		{
-			console.log( ajx.responseText);
+		var ajax = new XMLHttpRequest();
+
+		ajax.addEventListener('readystatechange',function(e){
+
+			if(ajax.readyState == 4){
+
+				if(ajax.status == 200)
+				{
+					handle_result(ajax.responseText);
+				}else{
+
+					console.log("An error occured. Err Code:"+ajax.status+" Err message:"+ajax.statusText);
+					console.log(ajax);
+				}
+			}
+			
 		});
-		ajx.open('post', '', true);
-		ajx.send();
-		ajx.close()
+
+		ajax.open('post','index.php?pg=ajax',true);
+		ajax.send();
 	}
+
+	function handle_result(result){
+
+		var obj = JSON.parse(result);
+
+		if(typeof obj != "undefined"){
+
+			//valid json
+			var mydiv = document.querySelector(".js-products");
+			mydiv.innerHTML = "";
+
+			for (var i = 0; i < obj.length; i++) {
+				
+				mydiv.innerHTML += product_html(obj[i]);
+			}
+			
+		}
+
+	}
+
+	function product_html(data)
+	{
+		return `
+			<div class="card m-2 border-0" style="min-width: 165px;max-width: 165px;">
+					<a href="#">
+						<img src="${data.image}" class="w-100 rounded border">
+					</a>
+					<div class="p-2" style="font-size:20px">
+						<div class="text-muted">${data.description}</div>
+						<div class="" style="font-size:20px"><b>NPR ${data.amount}</b></div>
+					</div>
+			</div>
+			`;
+	}
+
+	send_data();
 
 </script>
 

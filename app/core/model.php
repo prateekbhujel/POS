@@ -65,6 +65,7 @@ class Model extends Database
         $db->query($query, $clean_array);
     } 
     
+
     /* Deletes the data from Table */
 	public function delete($id)
 	{
@@ -77,9 +78,10 @@ class Model extends Database
 
 	}
 
+
     /* Returns the array and finds where the data is : */
 
-    public function where($data)
+    public function where($data, $limit = 10, $offset = 0, $order = 'desc', $order_column = 'id') //limit and offset is for pagination where offset is a page number
     {
         $keys = array_keys($data);
 
@@ -89,10 +91,24 @@ class Model extends Database
             $query .= "$key = :$key && ";
         }
         $query = trim($query,'&& ');
-
-        return $this->query($query, $data);
+        $query.= " order by $order_column $order limit $limit offset $offset";
+        $db = new Database();
+        return $db->query($query, $data);
     }
-    
+
+
+    /* Returns the array and finds all the data is : */
+
+    public function getAll($limit = 10, $offset = 0, $order = 'desc', $order_column = 'id')
+    {
+
+        $query = "select * from $this->table order by $order_column $order limit $limit offset $offset";
+
+        $db = new Database();
+        return $db->query($query);
+    }
+
+
     /* Gets the Fist data from the table with id  */
 
     public function first($id)
