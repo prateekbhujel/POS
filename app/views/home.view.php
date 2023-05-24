@@ -4,7 +4,7 @@
 		<div style="min-height:600px;" class="shadow-sm col-7 p-4">
 			
 			<div class="input-group mb-3"><h3> Items </h3>
-			  <input type="text" class="ms-4 form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" autofocus>
+			  <input type="text" oninput="search_item(event);" class="ms-4 form-control js-search" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" autofocus>
 			  <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
 			</div>
 
@@ -107,6 +107,17 @@
 
 <script>
 
+	 function search_item(e){
+
+		var text = e.target.value.trim();
+
+		var data = {};
+		data.data_type = "search";
+		data.text = text;
+
+		send_data(data);
+	};
+
 	function send_data(data)
 	{
 
@@ -122,18 +133,20 @@
 				}else{
 
 					console.log("An error occured. Err Code:"+ajax.status+" Err message:"+ajax.statusText);
-					console.log(ajax);
 				}
 			}
 			
 		});
 
 		ajax.open('post','index.php?pg=ajax',true);
-		ajax.send();
+
+		ajax.send(JSON.stringify(data));
 	}
 
 	function handle_result(result){
-
+		
+		// console.log(result);
+		
 		var obj = JSON.parse(result);
 
 		if(typeof obj != "undefined"){
@@ -154,7 +167,7 @@
 	function product_html(data)
 	{
 		return `
-			<div class="card m-2 border-0" style="min-width: 165px;max-width: 165px;">
+			<div class="card m-2 border-0 mx-auto" style="min-width: 165px;max-width: 165px;">
 					<a href="#">
 						<img src="${data.image}" class="w-100 rounded border">
 					</a>
@@ -166,7 +179,11 @@
 			`;
 	}
 
-	send_data();
+	send_data({
+
+		data_type:"search",
+		text:""
+	});
 
 </script>
 
