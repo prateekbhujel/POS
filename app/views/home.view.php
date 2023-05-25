@@ -164,7 +164,7 @@
 
 					<div class="input-group my-3" style="max-width:150px">
 					  <span index="${index}" onclick="change_qty('down',event)" class="input-group-text" style="cursor: pointer;"><i class="fa fa-minus text-primary"></i></span>
-					  <input index="${index}" onblur="change_qty('input',event)" type="text" class="form-control text-primary" placeholder="1" value="${data.qty}" >
+					  <input index="${index}" onblur="change_qty('input',event)" type="text" class="form-control text-primary text-center" placeholder="1" value="${data.qty}" >
 					  <span index="${index}" onclick="change_qty('up',event)" class="input-group-text" style="cursor: pointer;"><i class="fa fa-plus text-primary"></i></span>
 					</div>
 
