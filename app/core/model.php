@@ -1,72 +1,66 @@
 <?php
 
-/*
-* Model Class
-*/
+/**
+ * model class
+ */
 class Model extends Database
 {
-    protected $table;
-    
-
-    /* Gets the allowed column defined in the Model Class*/        
-
-    protected function get_allowed_columns($data)
-    {
-           
-        if(!empty($this->allowed_columns))
-        foreach ($data as $key => $value) 
-            {
-                if(!in_array($key, $this->allowed_columns))
-                {
-                    unset($data[$key]);
-                }
-            }
-            
-        return $data;
-        
-    }
 
 
-    /* Insert Into the Database */        
-    
-    public function insert($data)
-    {
-            
-        $clean_array = $this->get_allowed_columns($data, $this->table);
-        $keys = array_keys($clean_array);
+	protected function get_allowed_columns($data)
+	{
+ 
+ 		if(!empty($this->allowed_columns)){
+ 			
+			foreach ($data as $key => $value) {
+				// code...
+				if(!in_array($key, $this->allowed_columns))
+				{
+					unset($data[$key]);
+				}
+			}
+		}
 
-        $query = "insert into $this->table";
-        $query .= "(".implode(",", $keys).") values ";
-        $query .= "( :".implode(", :", $keys).")";
+		return $data;
+ 	}
 
-        $db =  new Database;
-        $db->query($query, $clean_array);
-    }    
+	public function insert($data)
+	{
 
+		$clean_array = $this->get_allowed_columns($data,$this->table);
+		$keys = array_keys($clean_array);
+		
+		$query = "insert into $this->table ";
+		$query .= "(".implode(",", $keys) .") values ";
+		$query .= "(:".implode(",:", $keys) .")";
 
-    /* Updates the query from the Database */
+		$db = new Database;
+		$db->query($query,$clean_array);	
 
-    public function update($id, $data)
-    {
-            
-        $clean_array = $this->get_allowed_columns($data, $this->table);
-        $keys = array_keys($clean_array);
-        
-        $query = "update $this->table set ";
-        foreach ($keys as $column) 
-        {
-            $query .= $column."=:".$column ."," ;
-        }
-        $query = trim($query,',');
-        $query .= " where id =:id";
-        $clean_array['id'] = $id;
-        
-        $db = new Database;
-        $db->query($query, $clean_array);
-    } 
-    
+	}
 
-    /* Deletes the data from Table */
+	public function update($id,$data)
+	{
+
+		$clean_array = $this->get_allowed_columns($data,$this->table);
+		$keys = array_keys($clean_array);
+		
+		$query = "update $this->table set ";
+
+		foreach ($keys as $column) {
+			// code...
+			$query .= $column . "=:".$column .",";
+		}
+
+		$query = trim($query,",");
+		$query .= " where id = :id";
+		$clean_array['id'] = $id;
+
+		$db = new Database;
+		$db->query($query,$clean_array);	
+
+	}
+
 	public function delete($id)
 	{
 
@@ -78,56 +72,62 @@ class Model extends Database
 
 	}
 
+	public function where($data,$limit = 10,$offset = 0,$order = "desc",$order_column = "id")
+	{
 
-    /* Returns the array and finds where the data is : */
+		$keys = array_keys($data);
+		
+		$query = "select * from $this->table where ";
 
-    public function where($data, $limit = 10, $offset = 0, $order = 'desc', $order_column = 'id') //limit and offset is for pagination where offset is a page number
-    {
-        $keys = array_keys($data);
+		foreach ($keys as $key) {
+			// code...
+			$query .= "$key = :$key && ";
+		}
 
-        $query = "select * from $this->table where ";
+		$query = trim($query,"&& ");
+		$query .= " order by $order_column $order limit $limit offset $offset";
 
-        foreach ($keys as $key) {
-            $query .= "$key = :$key && ";
-        }
-        $query = trim($query,'&& ');
-        $query.= " order by $order_column $order limit $limit offset $offset";
-        $db = new Database();
-        return $db->query($query, $data);
-    }
+		$db = new Database;
+		return $db->query($query,$data);	
 
+	}
 
-    /* Returns the array and finds all the data is : */
+	public function getAll($limit = 10,$offset = 0,$order = "desc",$order_column = "id")
+	{
 
-    public function getAll($limit = 10, $offset = 0, $order = 'desc', $order_column = 'id')
-    {
+		$query = "select * from $this->table order by $order_column $order limit $limit offset $offset";
+  		
+		$db = new Database;
+		return $db->query($query);	
 
-        $query = "select * from $this->table order by $order_column $order limit $limit offset $offset";
+	}
 
-        $db = new Database();
-        return $db->query($query);
-    }
+	public function first($data)
+	{
 
+		$keys = array_keys($data);
+		
+		$query = "select * from $this->table where ";
 
-    /* Gets the Fist data from the table with id  */
+		foreach ($keys as $key) {
+			// code...
+			$query .= "$key = :$key && ";
+		}
 
-    public function first($id)
-    {
-        $keys = array_keys($id);
+		$query = trim($query,"&& ");
 
-        $query = "select * from $this->table where ";
+		$db = new Database;
+		if($res = $db->query($query,$data))
+		{
+			return $res[0];
+		}
 
-        foreach ($keys as $key) {
-            $query .= "$key = :$key && ";
-        }
-        $query = trim($query,'&& ');
+		return false;	
 
-        if($res = $this->query($query, $id))
-        {
-            return $res[0];
-        }
+	}
 
-        return false;
-    }
-   
+	
+
 }
+
+

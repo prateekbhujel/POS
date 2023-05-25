@@ -7,7 +7,6 @@
 
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="assets/css/nepali.datepicker.v4.0.1.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/main.css">
 </head>
 <body>
@@ -15,12 +14,8 @@
 	<?php 
 		$no_nav[] = "login";
 	?>
-
 	<?php if(!in_array($controller, $no_nav)):?>
-		
-		
 		<?php require views_path('partials/nav');?>
-	
 	<?php endif;?>
 
 	<div class="container-fluid" style="min-width: 350px;">

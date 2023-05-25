@@ -66,9 +66,9 @@ class Product extends Model
 				{
 					$errors['image'] = "Product image is required";
 				}else
-				if(!($data['image']['type'] == "image/jpeg" || $data['image']['type'] == "image/png" || $data['image']['type'] == "image/gif" || $data['image']['type'] == "image/webp"))
+				if(!($data['image']['type'] == "image/jpeg" || $data['image']['type'] == "image/png"))
 				{
-					$errors['image'] = "Image must be a valid JPEG, GIF, WEBP, GIF or PNG";
+					$errors['image'] = "Image must be a valid JPEG or PNG";
 				}else
 				if($data['image']['error'] > 0)
 				{

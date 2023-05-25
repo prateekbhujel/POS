@@ -24,4 +24,5 @@ if($_SERVER['REQUEST_METHOD'] == "POST" && $row)
 }
 
 
-require views_path('products/products-delete');
+require views_path('products/product-delete');
+
