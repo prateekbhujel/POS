@@ -1,4 +1,16 @@
 <?php require views_path('partials/header');?>
+<style>
+	.hide
+	{
+		display: none;
+	}
+
+	@keyframes appear{
+		0%{opacity: 0; transform: translateY(-100px);}
+		100%{opacity: 1;transform: translateY(0px);}
+	}
+
+</style>
  
 	<div class="d-flex">
 		<div style="min-height:600px;" class="shadow-sm col-7 p-4">
@@ -16,7 +28,7 @@
 		
 		<div class="col-5 bg-light p-4 pt-2">
 			
-			<div><center><h3>Cart <div class="js-item-count badge bg-primary rounded-circle">0</div></h3></center></div>
+			<div><center><h3>Cart <div class="js-item-count badge bg-info rounded-circle">0</div></h3></center></div>
 			
 			<div class="table-responsive" style="height:400px;overflow-y: scroll;">
 				<table class="table table-striped table-hover">
@@ -31,14 +43,26 @@
 				</table>
 			</div>
 
-			<div class="js-gtotal alert alert-danger" style="font-size:30px">Total: $0.00</div>
+			<div class="js-gtotal alert alert-info font-monospace" style="font-size:27px">
+				<span class="text-black"><b>ITEM TOTAL :</b></span> <span  class="float-end text-danger fs-2"><b>Rs. 0.00<b></span></div>
 			<div class="">
-				<button class="btn btn-success my-2 w-100 py-4">Checkout</button>
-				<button onclick="clear_all()" class="btn btn-primary my-2 w-100">Clear All</button>
+				<button onclick="show_amount_paid_modal()" class="btn btn-success my-2 w-100 py-4">Checkout</button>
+				<button onclick="clear_all()" class="btn btn-danger my-2 w-100">Clear All</button>
 			</div>
 		</div>
 	</div>	
-
+	<!-- Modal Start -->
+		<div role = "close-button" onclick="hide_amount_paid_modal(event)" class="js-amount-paid-modal hide" style = "animation: appear .4s ease; background-color: #000000bb; width: 100%; height: 100%; position: fixed; left:0px; top:0px; right:0px; z-index:4;">
+			<div style="width: 500px; min-height: 200px; background-color: whitesmoke; padding: 10px; margin: auto; margin-top:100px;">
+				<h5>Checkout <button role="close-button" class="btn btn-danger float-end p-0 px-3 py-1">X</button></h5>
+				<br>
+				<input class="form-control" type="text" placeholder="Enter Amount Here"/>
+				<br>
+				<button role = "close-button" onclick="hide_amount_paid_modal(event)" class = "btn btn-secondary">Cancel</button>
+				<button class = "btn btn-primary float-end">Next</button>
+			</div>
+		</div>	
+	<!-- Modal End -->
 <script>
 	
 	var PRODUCTS 	= [];
@@ -143,7 +167,7 @@
 				</a>
 				<div class="p-2">
 					<div class="text-muted">${data.description}</div>
-					<div class="" style="font-size:20px"><b>$${data.amount}</b></div>
+					<div class="" style="font-size:20px"><b class="font-monospace">Rs. ${data.amount}</b></div>
 				</div>
 			</div>
 			<!--end card-->
@@ -159,9 +183,9 @@
 			<!--item-->
 			<tr>
 				<td style="width:110px"><img src="${data.image}" class="rounded border" style="width:100px;height:100px"></td>
-				<td class="text-primary">
+				<td class="text-secondary"><b>
 					${data.description}
-
+					</b>
 					<div class="input-group my-3" style="max-width:150px">
 					  <span index="${index}" onclick="change_qty('down',event)" class="input-group-text" style="cursor: pointer;"><i class="fa fa-minus text-primary"></i></span>
 					  <input index="${index}" onblur="change_qty('input',event)" type="text" class="form-control text-primary text-center" placeholder="1" value="${data.qty}" >
@@ -169,8 +193,8 @@
 					</div>
 
 				</td>
-				<td style="font-size:20px">
-					<b>$${data.amount}</b>
+				<td style="font-size:23px" class="font-monospace">
+					<b>Rs. ${data.amount}</b>
 					<button onclick="clear_item(${index})" class="float-end btn btn-danger btn-sm"><i class="fa fa-times"></i></button>
 				</td>
 			</tr>
@@ -229,7 +253,8 @@
 		}
 		
 		var gtotal_div = document.querySelector(".js-gtotal");
-		gtotal_div.innerHTML = "Total: $" + grand_total;
+		var total = `<span class="text-black"> <b>ITEM TOTAL : </b></span> <span class="text-danger float-end fs-2"> <b>Rs. `;
+		gtotal_div.innerHTML = total + grand_total + " </b></span>";
 	}
 
 	function clear_all()
@@ -288,6 +313,23 @@
 			search_item(e);
 		}
 	}
+
+	
+	function show_amount_paid_modal() 
+	{
+    	var mydiv = document.querySelector(".js-amount-paid-modal");
+    	mydiv.style.display = "block";
+	}
+
+	function hide_amount_paid_modal(e) 
+	{
+		if(e.target.getAttribute("role") == "close-button")
+		{
+			var mydiv = document.querySelector(".js-amount-paid-modal");
+			mydiv.style.display = "none";
+		}
+	}
+
 
 	send_data({
 

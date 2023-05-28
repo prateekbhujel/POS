@@ -1,11 +1,11 @@
 <div class="table-responsive">
 	
-	<table class="table table-striped table-hover">
-		<tr>
+	<table class="table table-striped table-hover table-bordered">
+		<tr class="table-info">
 			<th>Barcode</th><th>Product</th><th>Qty</th><th>Price</th><th>Image</th><th>Date</th>
 			<th>
 				<a href="index.php?pg=product-new">
-					<button class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add new</button>
+					<button class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Add new</button>
 				</a>
 			</th>
 		</tr>
@@ -27,10 +27,10 @@
 				<td><?=date("jS M, Y",strtotime($product['date']))?></td>
 				<td>
 					<a href="index.php?pg=product-edit&id=<?=$product['id']?>">
-						<button class="btn btn-success btn-sm">Edit</button>
+						<button class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></button>
 					</a>
 					<a href="index.php?pg=product-delete&id=<?=$product['id']?>">
-						<button class="btn btn-danger btn-sm">Delete</button>
+						<button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
 					</a>
 				</td>
 			</tr>
