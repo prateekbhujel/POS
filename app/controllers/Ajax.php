@@ -43,6 +43,13 @@ if(!empty($raw_data))
 
 			}
 
+		}else
+		if(($OBJ['data_type']) == 'checkout')
+		{
+			show($OBJ['text']);
+
+			$info['data_type'] = "checkout";
+			$info['data'] = "Items Saved Successfully !";
 		}
 	}
 

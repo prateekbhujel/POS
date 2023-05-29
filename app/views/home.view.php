@@ -44,30 +44,48 @@
 			</div>
 
 			<div class="js-gtotal alert alert-info font-monospace" style="font-size:27px">
-				<span class="text-black"><b>ITEM TOTAL :</b></span> <span  class="float-end text-danger fs-2"><b>Rs. 0.00<b></span></div>
+				<span class="text-black"><b>TOTAL :</b></span> <span  class="float-end text-danger fs-2"><b>Rs. 0.00<b></span></div>
 			<div class="">
-				<button onclick="show_amount_paid_modal()" class="btn btn-success my-2 w-100 py-4">Checkout</button>
+				<button onclick="show_modal('amount-paid')" class="btn btn-success my-2 w-100 py-4">Checkout</button>
 				<button onclick="clear_all()" class="btn btn-danger my-2 w-100">Clear All</button>
 			</div>
 		</div>
 	</div>	
 	<!-- Modal Start -->
-		<div role = "close-button" onclick="hide_amount_paid_modal(event)" class="js-amount-paid-modal hide" style = "animation: appear .4s ease; background-color: #000000bb; width: 100%; height: 100%; position: fixed; left:0px; top:0px; right:0px; z-index:4;">
-			<div style="width: 500px; min-height: 200px; background-color: whitesmoke; padding: 10px; margin: auto; margin-top:100px;">
-				<h5>Checkout <button role="close-button" class="btn btn-danger float-end p-0 px-3 py-1">X</button></h5>
-				<br>
-				<input class="form-control" type="text" placeholder="Enter Amount Here"/>
-				<br>
-				<button role = "close-button" onclick="hide_amount_paid_modal(event)" class = "btn btn-secondary">Cancel</button>
-				<button class = "btn btn-primary float-end">Next</button>
+
+		<!-- Amount Modal Start -->
+		<div role = "close-button" onclick="hide_modal(event, 'amount-paid')" class="js-amount-paid-modal hide" style = "animation: appear .4s ease; background-color: #000000bb; width: 100%; height: 100%; position: fixed; left:0px; top:0px; right:0px; z-index:4;">
+				<div style="width: 500px; min-height: 200px; background-color: whitesmoke; padding: 10px; margin: auto; margin-top:100px;">
+					<h5>Checkout <button role="close-button" onclick="hide_modal(event, 'amount-paid')" class="btn btn-danger float-end p-0 px-3 py-1">X</button></h5>
+					<br>
+					<input onkeyup = "if(event.keyCode == 13)validate_amount_paid(event)" class="js-amount-paid-input form-control" type="text" placeholder="Enter Amount Here"/>
+					<br>
+					<button role = "close-button" onclick="hide_modal(event, 'amount-paid')" class = "btn btn-secondary">Cancel</button>
+					<button onclick = "validate_amount_paid(event)" class = "btn btn-primary float-end">Next</button>
+				</div>
 			</div>
-		</div>	
+		<!-- Amount Modal Start -->	
+	
+		<!-- Change Modal Start -->
+			<div role = "close-button" onclick="hide_modal(event, 'change')" class="js-change-modal hide" style = "animation: appear .4s ease; background-color: #000000bb; width: 100%; height: 100%; position: fixed; left:0px; top:0px; right:0px; z-index:4;">
+				<div style="width: 500px; min-height: 200px; background-color: whitesmoke; padding: 10px; margin: auto; margin-top:100px;">
+					<h5>Change: <button role="close-button" onclick="hide_modal(event, 'change')" class="btn btn-danger float-end p-0 px-3 py-1">X</button></h5>
+					<br>
+					<div class="js-change-input form-control text-center" style = "font-size:60px;">0.00</div>
+					<br>
+					<center><button role = "close-button" onclick="hide_modal(event, 'change')" class = "js-btn-close-change btn btn-lg btn-secondary">Continue</button></center>
+				</div>
+			</div>
+		<!-- Change Modal Start -->
+		
 	<!-- Modal End -->
 <script>
 	
 	var PRODUCTS 	= [];
 	var ITEMS 		= [];
 	var BARCODE 	= false;
+	var GTOTAL 		= 0;
+	var CHANGE 		= 0;
 
 	var main_input = document.querySelector(".js-search");
 
@@ -90,10 +108,6 @@
 		ajax.addEventListener('readystatechange',function(e){
 
 			if(ajax.readyState == 4){
-
-				var mydiv = document.querySelector(".js-products");
-				mydiv.innerHTML = "";
-				PRODUCTS = [];
 
 				if(ajax.status == 200)
 				{
@@ -135,6 +149,10 @@
 			//valid json
 			if(obj.data_type == "search")
 			{
+				
+				var mydiv = document.querySelector(".js-products");
+				mydiv.innerHTML = "";
+				PRODUCTS = [];
 
 				var mydiv = document.querySelector(".js-products");
 				if(obj.data != "")
@@ -253,8 +271,9 @@
 		}
 		
 		var gtotal_div = document.querySelector(".js-gtotal");
-		var total = `<span class="text-black"> <b>ITEM TOTAL : </b></span> <span class="text-danger float-end fs-2"> <b>Rs. `;
+		var total = `<span class="text-black"> <b>TOTAL : </b></span> <span class="text-danger float-end fs-2"> <b>Rs. `;
 		gtotal_div.innerHTML = total + grand_total + " </b></span>";
+		GTOTAL = grand_total;
 	}
 
 	function clear_all()
@@ -315,22 +334,90 @@
 	}
 
 	
-	function show_amount_paid_modal() 
+	function show_modal(modal) 
 	{
-    	var mydiv = document.querySelector(".js-amount-paid-modal");
-    	mydiv.style.display = "block";
+		if(modal == "amount-paid"){
+
+			if(ITEMS.length == 0)
+			{
+				alert("Cart Cannot be Empty, Please add at least 1 Item to the cart !");
+				return;
+			}
+    		var mydiv = document.querySelector(".js-amount-paid-modal");
+    		mydiv.classList.remove("hide");
+
+			mydiv.querySelector(".js-amount-paid-input").value = "";
+			mydiv.querySelector(".js-amount-paid-input").focus();
+		}else
+			if(modal == 'change'){
+				var mydiv = document.querySelector(".js-change-modal");
+    			mydiv.classList.remove("hide");
+
+				mydiv.querySelector(".js-change-input").innerHTML = "Rs. " + CHANGE;
+				mydiv.querySelector(".js-btn-close-change").focus();
+
+			}
 	}
 
-	function hide_amount_paid_modal(e) 
+	function hide_modal(e, modal) 
 	{
-		if(e.target.getAttribute("role") == "close-button")
+		if(e == true || e.target.getAttribute("role") == "close-button")
 		{
-			var mydiv = document.querySelector(".js-amount-paid-modal");
-			mydiv.style.display = "none";
+			if(modal == "amount-paid"){
+				var mydiv = document.querySelector(".js-amount-paid-modal");
+				mydiv.classList.add("hide");
+			}else
+			if(modal == "change"){
+				var mydiv = document.querySelector(".js-change-modal");
+				mydiv.classList.add("hide");
+				
+			}
 		}
 	}
 
+	function validate_amount_paid(e)
+	{
+		var amount = e.currentTarget.parentNode.querySelector(".js-amount-paid-input").value.trim();
 
+		if(amount == "")
+		{
+			alert("Please Enter a valid Amount !!");
+			document.querySelector(".js-amount-paid-input").focus();
+			return;
+		}
+
+		amount = parseFloat(amount);
+		if(amount < GTOTAL)
+		{
+			alert("Amount Must be Higher or Equal to Total !!");
+			document.querySelector(".js-amount-paid-input").focus();
+			return;
+		}
+
+		CHANGE = amount - GTOTAL ;
+		CHANGE = CHANGE.toFixed(2);//Limiting decimal to 2
+		hide_modal(true,'amount-paid');
+		show_modal('change');
+		// Removing Unwanted Information
+		var ITEMS_NEW = [];
+		for (var i = 0; i < ITEMS.length; i++)
+		{
+			var tmp = {};
+			tmp.id = ITEMS[i]['id'];
+			tmp.qty =ITEMS[i]['qty'];
+
+			ITEMS_NEW.push(tmp);
+		}
+		//send cart data to db through ajax
+		send_data({
+			data_type:"checkout",
+			text:ITEMS_NEW
+		});
+
+		//Clearning Items Cart
+		ITEMS = [];
+		refresh_items_display();
+	}
 	send_data({
 
 		data_type:"search",
