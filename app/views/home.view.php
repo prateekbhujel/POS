@@ -142,7 +142,7 @@
 
 	function handle_result(result){
 		
-		console.log(result);
+		// console.log(result);
 		var obj = JSON.parse(result);
 		if(typeof obj != "undefined"){
 
@@ -398,13 +398,14 @@
 		CHANGE = CHANGE.toFixed(2);//Limiting decimal to 2
 		hide_modal(true,'amount-paid');
 		show_modal('change');
+		
 		// Removing Unwanted Information
 		var ITEMS_NEW = [];
 		for (var i = 0; i < ITEMS.length; i++)
 		{
 			var tmp = {};
 			tmp.id = ITEMS[i]['id'];
-			tmp.qty =ITEMS[i]['qty'];
+			tmp.qty =ITEMS[i]['qty'];		
 
 			ITEMS_NEW.push(tmp);
 		}

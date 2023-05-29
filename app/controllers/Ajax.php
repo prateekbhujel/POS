@@ -46,10 +46,45 @@ if(!empty($raw_data))
 		}else
 		if(($OBJ['data_type']) == 'checkout')
 		{
-			show($OBJ['text']);
+			$data 		= $OBJ['text'];
+			$receipt_no 	= get_receipt_no();
+			$user_id 	= auth("id");
+			$date 		= date("Y-m-d H:i:s");
+
+			$db = new Database();
+
+			//Read from Database
+			foreach($data as $row)
+			{
+				$arr = [];
+				$arr['id'] = $row['id']; 
+				$query = "select * from products where id = :id limit 1";
+				$check = $db->query($query, $arr);
+
+				if(is_array($check))
+				{
+					$check = $check[0];
+
+					//Save to database
+					$arr = [];
+					$arr['barcode'] 	= $check['barcode'];
+					$arr['description'] = $check['description'];
+					$arr['amount'] 		= $check['amount'];
+					$arr['qty'] 		= $row['qty'];
+					$arr['total'] 		= $row['qty'] * $check['amount'];
+					$arr['receipt_no'] 	= $receipt_no;
+					$arr['date'] 		= $date;
+					$arr['user_id'] 	= $user_id;
+
+					$query = "insert into sales (barcode, receipt_no, description, qty, amount, total, date, user_id) values (:barcode, :receipt_no, :description, :qty, :amount, :total, :date, :user_id)";
+					$db->query($query, $arr);
+				}
+			}
 
 			$info['data_type'] = "checkout";
-			$info['data'] = "Items Saved Successfully !";
+			$info['data'] = "items saved successfully!";
+				
+			echo json_encode($info);
 		}
 	}
 
