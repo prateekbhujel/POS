@@ -10,5 +10,13 @@ if($tab == "products")
 	$products = $productClass->query("select * from products order by id desc");
 }
 
-require views_path('admin/admin');
+if(Auth::access('supervisor'))
+{
+	
+	require views_path('admin/admin');
+}else
+{
+	Auth::setMessage('You dont have access to admin page !');
+	require views_path('auth/denied');
+}
 
