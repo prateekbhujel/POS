@@ -27,7 +27,7 @@
 				<td><?=date("jS M, Y",strtotime($product['date']))?></td>
 				<td>
 					<a href="index.php?pg=product-edit&id=<?=$product['id']?>">
-						<button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
+						<button class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></button>
 					</a>
 					<a href="index.php?pg=product-delete&id=<?=$product['id']?>">
 						<button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
