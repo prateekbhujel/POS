@@ -22,6 +22,13 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 
 }
 	
-
-require views_path('auth/signup');
+if(Auth::access('admin'))
+{
+	
+	require views_path('auth/signup');
+}else
+{
+	Auth::setMessage('You need to Login as Admin to Access this Page !');
+	require views_path('auth/denied');
+}
 
