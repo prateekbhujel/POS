@@ -5,7 +5,7 @@
 			<th>Image</th><th>User Name</th><th>Gender</th><th>Email</th><th>Role</th><th>Date</th>
 			<th>
 				<a href="index.php?pg=signup">
-					<button class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Add new</button>
+					<button class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Add New User</button>
 				</a>
 			</th>
 		</tr>
@@ -30,12 +30,15 @@
 
 				<td><?=date("jS M, Y",strtotime($user['date']))?></td>
 				<td>
-					<a href="index.php?pg=user-edit&id=<?=$user['id']?>">
+					<a href="index.php?pg=edit-user&id=<?=$user['id']?>">
 						<button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
 					</a>
-					<a href="index.php?pg=user-delete&id=<?=$user['id']?>">
+					<?php if($user['deletable']):?>
+					<a href="index.php?pg=delete-user&id=<?=$user['id']?>">
 						<button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
 					</a>
+					<?php endif;?>
+
 				</td>
 			</tr>
 			<?php endforeach;?>

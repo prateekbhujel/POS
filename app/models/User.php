@@ -14,12 +14,13 @@ class User extends Model
 				'email',
 				'password',
 				'role',
+				'gender',
 				'image',
 				'date',
 			];
 
 
- 	public function validate($data)
+ 	public function validate($data, $id = null)
 	{
 		$errors = [];
 
@@ -28,7 +29,7 @@ class User extends Model
 			{
 				$errors['username'] = "Username is required";
 			}else
-			if(!preg_match('/[a-zA-Z0-9]/', $data['username']))
+			if(!preg_match('/^[a-z A-Z]+$/', $data['username']))
 			{
 				$errors['username'] = "Only letters allowed in username";
 			}
@@ -44,19 +45,34 @@ class User extends Model
 			}
 
 			//check password
-			if(empty($data['password']))
+			if(!$id)
 			{
-				$errors['password'] = "password is required";
+				if(empty($data['password']))
+				{
+					$errors['password'] = "password is required";
+				}else
+				if($data['password'] !== $data['password_retype'])
+				{
+					$errors['password_retype'] = "Passwords do not match";
+				}else
+				if(strlen($data['password']) < 8)
+				{
+					$errors['password'] = "Password must be at least 8 characters long";
+				}
 			}else
-			if($data['password'] !== $data['password_retype'])
 			{
-				$errors['password_retype'] = "Passwords do not match";
-			}else
-			if(strlen($data['password']) < 8)
-			{
-				$errors['password'] = "Password must be at least 8 characters long";
+				if(!empty($data['password']))
+				{
+					if($data['password'] !== $data['password_retype'])
+					{
+						$errors['password_retype'] = "Passwords do not match";
+					}else
+					if(strlen($data['password']) < 8)
+					{
+						$errors['password'] = "Password must be at least 8 characters long";
+					}
+				}
 			}
-
 		return $errors;
 	}
 

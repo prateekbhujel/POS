@@ -272,7 +272,7 @@
 		
 		var gtotal_div = document.querySelector(".js-gtotal");
 		var total = `<span class="text-black"> <b>TOTAL : </b></span> <span class="text-danger float-end fs-2"> <b>Rs. `;
-		gtotal_div.innerHTML = total + grand_total + " </b></span>";
+		gtotal_div.innerHTML = total + grand_total.toFixed(2) + " </b></span>";
 		GTOTAL = grand_total;
 	}
 

@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 		$_POST['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
 		$user->insert($_POST,'users');
 
-		redirect('login');
+		redirect('admin&tab=users');
 	}
 
 

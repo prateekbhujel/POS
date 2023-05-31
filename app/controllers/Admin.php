@@ -11,8 +11,8 @@ if($tab == "products")
 }else
 if($tab == 'sales')
 {
-	// $salesClass = new Sales();
-	// $sales = $salesClass->query("Select * from sales order by id desc");
+	$salesClass = new Sale();
+	$sales = $salesClass->query("Select * from sales order by id desc");
 }else
 if($tab == 'users')
 {

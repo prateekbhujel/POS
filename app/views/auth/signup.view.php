@@ -4,7 +4,7 @@
 		
 		<form method="post">
 			<center>
-				<h3><i class="fa fa-user"></i> User Signup</h3>
+				<h3><i class="fa fa-user"></i> Create User</h3>
 				<div><?=esc(APP_NAME)?></div>
 			</center>
 			<br>
@@ -43,7 +43,7 @@
 			</div>
 
 			<br>
-			<button class="btn btn-primary float-end">Signup</button>
+			<button class="btn btn-primary float-end">Create</button>
 			
 			<a href="index.php?pg=admin&tab=users">
 				<button class="btn btn-danger">Cancel</button>
