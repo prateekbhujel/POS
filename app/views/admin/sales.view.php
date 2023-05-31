@@ -1,5 +1,14 @@
+<ul class="nav nav-tabs">
+	<li class="nav-item">
+		<a href="#" class="nav-link active" aria-current="page" >Table View</a>
+	</li>
+	<li class="nav-item">
+		<a href="#" class="nav-link">Graph View</a>
+	</li>
+</ul>
+<br>
 <div class="table-responsive">
-	
+	<div class="my-3"><h3>Today's Total: 	<span class = "text text-success"> Rs. <?=number_format($sales_total)?></span></h3></div>
 	<table class="table table-striped table-hover table-bordered">
 		<tr class="table-info">
 			<th>Barcode</th><th>Receipt NO</th><th>Description</th><th>Qty</th><th>Amount</th><th>Total</th><th>Cashier</th><th>Date</th>

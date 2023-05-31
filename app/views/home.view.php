@@ -418,6 +418,12 @@
 		//Clearning Items Cart
 		ITEMS = [];
 		refresh_items_display();
+
+		// Reload The page Products
+		send_data({
+			data_type:"search",
+			text:""
+		});
 	}
 	send_data({
 
