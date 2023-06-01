@@ -7,12 +7,18 @@ if($tab == "products")
 {
 
 	$productClass = new Product();
-	$products = $productClass->query("select * from products order by id desc");
+	$pager = new Pager();
+	$limit = 10;
+	$offset = $pager->offset;
+	$products = $productClass->query("select * from products order by id desc limit $limit offset $offset");
 }else
 if($tab == 'sales')
 {
 	$salesClass = new Sale();
-	$sales = $salesClass->query("Select * from sales order by id desc");
+	$limit = 10;
+	$pager  = new Pager($limit);
+	$offset = $pager->offset;
+	$sales  = $salesClass->query("Select * from sales order by id desc limit $limit offset $offset");
 
 	//Get Total Sales 
 	$year = date("Y");
@@ -32,8 +38,12 @@ if($tab == 'sales')
 }else
 if($tab == 'users')
 {
+	$limit = 10;
+	$pager = new Pager($limit);
+	$offset = $pager->offset;
+
 	$userClass = new User();
-	$users = $userClass->query("select * from users order by id desc");
+	$users = $userClass->query("select * from users order by id desc limit $limit offset $offset");
 }
 
 

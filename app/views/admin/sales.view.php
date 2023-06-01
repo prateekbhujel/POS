@@ -43,4 +43,9 @@
 		<?php endif;?>
 		
 	</table>
+
+	<?php
+		$pager->display(count($sales));
+	?>
+
 </div>

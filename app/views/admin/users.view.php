@@ -45,4 +45,7 @@
 		<?php endif;?>
 		
 	</table>
+	<?php
+	$pager->display(count($users));
+	?>
 </div>
