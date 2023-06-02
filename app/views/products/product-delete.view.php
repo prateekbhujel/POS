@@ -5,8 +5,9 @@
 		<?php if(!empty($row)):?>
 
 		<form method="post" enctype="multipart/form-data">
-
-			<h5 class="text-primary"><i class="fa fa-hamburger"></i> Delete Product</h5>
+			<center>
+				<h5 class="text-danger"><i class="fa fa-trash"></i> Delete Product</h5>
+			</center>
 
 			<div class="alert alert-danger text-center">Are you sure you want to delete this product??!!</div>
 

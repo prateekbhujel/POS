@@ -8,7 +8,7 @@ class Pager
 	
 	protected $limit		= 10;
 	public $offset			= 0;
-	public $steps			= 2;
+	public $steps			= 1;
 
 	public function __construct($limit = 10)
 	{

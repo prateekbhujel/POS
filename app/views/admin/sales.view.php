@@ -28,7 +28,23 @@
 				<td><?=esc($sale['qty'])?></td>
 				<td>Rs. <?=esc($sale['amount'])?></td>
 				<td><?=esc($sale['total'])?></td>
-				<td><?=esc($sale['user_id'])?></td>
+				<?php 
+					$cashier = get_user_by_id($sale['user_id']);
+					if(empty($cashier))
+					{
+						$name = "Unknown";
+						$name_link = "#";
+					}else
+					{
+						$name = $cashier['username'];
+						$name_link ="index.php?pg=profile&id=".$cashier['id'];
+					}
+				?>
+				<td>
+					<a href="<?=$name_link?>">
+						<?=esc($name)?>
+					</a>
+				</td>
 				<td><?=date("jS M, Y",strtotime($sale['date']))?></td>
 				<td>
 					<a href="index.php?pg=sale-edit&id=<?=$sale['id']?>">
