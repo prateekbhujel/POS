@@ -1,3 +1,13 @@
+<?php 
+	if(!empty( $_SESSION['referer']))
+	{
+		$back_link	= $_SESSION['referer'];
+	}
+	else
+	{
+		$back_link  = "index.php?pg=admin&tab=users"; 
+	}
+?>
 <?php require views_path('partials/header');?>
 
 	<div class="container-fluid border col-lg-5 col-md-6 mt-5 p-4" >
@@ -33,11 +43,12 @@
                     <option>male</option>
                     <option>female</option>
                 </select>
-                <?php if(!empty($errors['email'])):?>
-					<small class="text-danger"><?=$errors['email']?></small>
+                <?php if(!empty($errors['gender'])):?>
+					<small class="text-danger"><?=$errors['gender']?></small>
 				<?php endif;?>
 			</div>
 
+			<?php if(Auth::get('id') == 'admin'):?>
             <div class="mb-3">
 			  <label for="exampleFormControlInput1" class="form-label">Role</label>
               <select name="role" class="form-control  <?=!empty($errors['role']) ? 'border-danger':''?>">
@@ -52,7 +63,7 @@
 					<small class="text-danger"><?=$errors['role']?></small>
 				<?php endif;?>
 			</div>
-
+			<?php endif;?>
 
 			<div class="input-group mb-3">
 			  <span class="input-group-text" id="basic-addon1">Password</span>
@@ -72,17 +83,19 @@
 			</div>
 
 			<br>
-			<button class="btn btn-primary float-end">Save</button>
+			<button class="btn btn-success float-end">Save</button>
 			
-			<a href="index.php?pg=admin&tab=users">
+			<a href="<?=$back_link?>">
 				<button type="button" class="btn btn-danger">Cancel</button>
 			</a>
+			<div class="clearfix"></div>
+			
 		</form>
         <?php else:?>
             <div class="text alert alert-danger">
                 That User Was Not Found !!
             </div>
-            <a href="index.php?pg=admin&tab=users">
+            <a href="<?=$back_link?>">
 				<button class="btn btn-danger">Cancel</button>
 			</a>
         <?php endif;?>

@@ -172,3 +172,8 @@ function get_receipt_no()
 	return $num;
 }
 
+function get_date($data)
+{
+	return date("jS M, Y", strtotime($data));
+}
+

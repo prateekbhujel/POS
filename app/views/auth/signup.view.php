@@ -24,6 +24,18 @@
 					<small class="text-danger"><?=$errors['email']?></small>
 				<?php endif;?>
 			</div>
+			
+			<div class="mb-3">
+			  <label for="exampleFormControlInput1" class="form-label">Gender</label>
+				<select name="gender" class="form-control  <?=!empty($errors['gender']) ? 'border-danger':''?>">
+                    <option>-- Please Select Gender --</option>
+                    <option>male</option>
+                    <option>female</option>
+                </select>
+                <?php if(!empty($errors['gender'])):?>
+					<small class="text-danger"><?=$errors['gender']?></small>
+				<?php endif;?>
+			</div>
 
 			<div class="input-group mb-3">
 			  <span class="input-group-text" id="basic-addon1">Password</span>
