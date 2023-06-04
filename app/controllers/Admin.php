@@ -14,20 +14,50 @@ if($tab == "products")
 }else
 if($tab == 'sales')
 {
+	$section   = $_GET['s'] ?? 'table';
+	$startdate = $_GET['start'] ?? null;
+	$enddate   = $_GET['end'] ?? null;
+	
 	$salesClass = new Sale();
-	$limit = 10;
+	
+	$limit  = $_GET['limit'] ?? 20;
+	$limit  = (int)$limit;
+	$limit  = $limit < 1 ? 10 : $limit;
+
 	$pager  = new Pager($limit);
 	$offset = $pager->offset;
-	$sales  = $salesClass->query("Select * from sales order by id desc limit $limit offset $offset");
 
+	$query  = "Select * from sales order by id desc limit $limit offset $offset";
+	
 	//Get Total Sales 
 	$year = date("Y");
 	$month = date("m");
 	$day = date("d");
 	
-	$query = "select SUM(total) as total from sales where day(date)=$day && month(date)= $month && year(date) = $year";
+	$query_total = "select SUM(total) as total from sales where day(date)=$day && month(date)= $month && year(date) = $year";
+
+	//If start date and end date is set
+	if($startdate && $enddate)
+	{
+
+		$query 	  = "SELECT * FROM sales WHERE DATE BETWEEN '$startdate' AND '$enddate' ORDER BY id DESC LIMIT $limit OFFSET $offset";
+
+		$query_total = "SELECT SUM(total) AS total FROM sales WHERE DATE BETWEEN '$startdate' AND '$enddate'";
+	}else
+
+	//if only start date is set
+	if($startdate && !$enddate)
+	{
+
+		$query 	  = "SELECT * FROM sales WHERE DATE = '$startdate' ORDER BY id DESC LIMIT $limit OFFSET $offset";
+		
+		$query_total = "SELECT SUM(total) AS total FROM sales WHERE DATE ='$startdate' ";
+	}
+
+	$sales = $salesClass->query($query);
+
 	
-	$st = $salesClass->query($query);
+	$st = $salesClass->query($query_total);
 	$sales_total = 0;
 
 	if($st)

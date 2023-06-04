@@ -8,6 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/all.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/main.css">
+	<link href="assets/css/nepali.datepicker.v4.0.1.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 
