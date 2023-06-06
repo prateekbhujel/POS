@@ -105,12 +105,33 @@
 		
 		$graph = new Graph();
 
-		$data=[];
+		$data = generate_daily_data($today_records);
+		$graph->title = "Today's Sales";
+		$graph->styles = "width:85%; margin:auto; display: block;";
+		$graph->display($data);
+	?>
+	<br>
 
-		// $graph->display($data);
-		show($today_records);
+	<?php
+		$data = generate_monthly_data($thismonth_records);
+		$graph->title = "This month's Sales";
+		$graph->styles = "width:85%; margin:auto; display: block;";
+		$graph->display($data);
+	?>
+	<br>
+	
+	<?php
+		$data = generate_yearly_data($thismonth_records);
+		$graph->title = "This Year's Sales";
+		$graph->styles = "width:85%; margin:auto; display: block;";
+		$graph->display($data);
+	?>
+	<br>
+
+	<?php
+		// show($data);
 		show($thismonth_records);
 		show($thisyear_records);
 	?>
-
+	
 <?php endif;?>

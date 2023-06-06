@@ -183,3 +183,79 @@ function get_user_by_id($id)
 	$user = new User();
 	return $user->first(['id'=>$id]);
 }
+
+function generate_daily_data($datas)
+{	
+	$arr = [];
+
+	for ($i=0; $i < 24 ; $i++) 
+	{ 	
+		if(!isset($arr[$i]))
+		{
+			$arr[$i] = 0;
+		}
+
+		foreach ($datas as $row) 
+		{
+			$hour = date('H', strtotime($row['date']));
+
+			if($hour == $i){
+					
+				$arr[$i] = $row['total'];
+			}
+		}
+	}
+
+	return $arr;
+}
+
+
+function generate_monthly_data($datas)
+{
+	$arr = [];
+	$totalDaysInMonth = cal_days_in_month(CAL_GREGORIAN, date("m"), date("Y"));
+
+	for ($i=1; $i <= $totalDaysInMonth ; $i++) 
+	{ 	
+		if(!isset($arr[$i]))
+		{
+			$arr[$i] = 0;
+		}
+
+		foreach ($datas as $row) 
+		{
+			$day = date('d', strtotime($row['date']));
+
+			if($day == $i){
+					
+				$arr[$i] = $row['total'];
+			}
+		}
+	}
+
+	return $arr;
+}
+
+function generate_yearly_data($datas)
+{
+	$arr = [];
+	$months =['0','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEPT','OCT','NOV','DEC'];
+	for ($i=1; $i < 12 ; $i++) 
+	{ 	
+		if(!isset($arr[$months[$i]]))
+		{
+			$arr[$months[$i]] = 0;
+		}
+
+		foreach ($datas as $row) 
+		{
+			$month = date('m', strtotime($row['date']));
+
+			if($month == $i){
+					
+				$arr[$months[$i]] = $row['total'];
+			}
+		}
+	}
+	return $arr;
+}

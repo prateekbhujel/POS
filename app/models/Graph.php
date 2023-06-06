@@ -10,6 +10,7 @@ class Graph
 	public $canvasY = 400;
 	public $font_size = 16;
 	public $styles = "";
+	public $title = "Graph Title";
 
 	public function display($data)
 	{
@@ -18,7 +19,7 @@ class Graph
 
 			if(!is_array($data) || empty($data))
 			{
-				echo "<span class='text-secondary text-danger'> Data variable must be an array and contain data ! <span>";
+				echo "<span class='text-secondary text-danger'> Data variable must be an array and contain data ! </span>";
 				return;
 			}
 
@@ -127,7 +128,10 @@ class Graph
 				}
 
 			?>
-		 
+			<!-- Graph Title -->
+			<text x = "10" y = "<?=-($extraY / 2)?>">
+				<?=$this->title?>
+			</text>
 		</svg>
 
 		<?php 

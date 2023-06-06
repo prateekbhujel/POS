@@ -72,20 +72,20 @@ if($tab == 'sales')
 
 		//Query Today's Records
 		$today_date = date('Y-m-d');
-		$query = "SELECT total FROM sales WHERE DATE(date) = '$today_date' ";
+		$query = "SELECT total,date FROM sales WHERE DATE(date) = '$today_date' ";
 		$today_records = $db->query($query);
 
 		//Query This Month's Records
 		$thismonth = date('m');
 		$thisyear = date('Y');
 		
-		$query = "SELECT total FROM sales WHERE MONTH(date) = '$thismonth' && YEAR(date)= '$thisyear'";
+		$query = "SELECT total,date FROM sales WHERE MONTH(date) = '$thismonth' && YEAR(date)= '$thisyear'";
 		$thismonth_records = $db->query($query);
 
 		//Query This Year's Records
 		$thisyear = date('Y');
 		
-		$query = "SELECT total FROM sales WHERE YEAR(date)= '$thisyear'";
+		$query = "SELECT total,date FROM sales WHERE YEAR(date)= '$thisyear'";
 		$thisyear_records = $db->query($query);
 
 	}
