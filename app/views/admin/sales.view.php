@@ -98,5 +98,19 @@
 
 	</div>
 <?php else:?>
+
 	<h4>Graph View</h4>
+
+	<?php
+		
+		$graph = new Graph();
+
+		$data=[];
+
+		// $graph->display($data);
+		show($today_records);
+		show($thismonth_records);
+		show($thisyear_records);
+	?>
+
 <?php endif;?>

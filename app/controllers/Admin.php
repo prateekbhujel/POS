@@ -10,7 +10,7 @@ if($tab == "products")
 	$pager = new Pager();
 	$limit = 10;
 	$offset = $pager->offset;
-	$products = $productClass->query("select * from products order by id desc limit $limit offset $offset");
+	$products = $productClass->query("SELECT * FROM products ORDER BY id DESC LIMIT $limit OFFSET $offset");
 }else
 if($tab == 'sales')
 {
@@ -27,14 +27,14 @@ if($tab == 'sales')
 	$pager  = new Pager($limit);
 	$offset = $pager->offset;
 
-	$query  = "Select * from sales order by id desc limit $limit offset $offset";
+	$query  = "SELECT * FROM sales ORDER BY id DESC LIMIT $limit OFFSET $offset";
 	
 	//Get Total Sales 
 	$year = date("Y");
 	$month = date("m");
 	$day = date("d");
 	
-	$query_total = "select SUM(total) as total from sales where day(date)=$day && month(date)= $month && year(date) = $year";
+	$query_total = "SELECT SUM(total) AS total FROM sales WHERE DAY(date)=$day && MONTH(date)= $month && YEAR(date) = $year";
 
 	//If start date and end date is set
 	if($startdate && $enddate)
@@ -65,6 +65,31 @@ if($tab == 'sales')
 		$sales_total =  $st[0]['total'] ?? 0;
 	}
 
+	if($section == 'graph')
+	{
+		//Read The Graph data
+		$db = new Database();
+
+		//Query Today's Records
+		$today_date = date('Y-m-d');
+		$query = "SELECT total FROM sales WHERE DATE(date) = '$today_date' ";
+		$today_records = $db->query($query);
+
+		//Query This Month's Records
+		$thismonth = date('m');
+		$thisyear = date('Y');
+		
+		$query = "SELECT total FROM sales WHERE MONTH(date) = '$thismonth' && YEAR(date)= '$thisyear'";
+		$thismonth_records = $db->query($query);
+
+		//Query This Year's Records
+		$thisyear = date('Y');
+		
+		$query = "SELECT total FROM sales WHERE YEAR(date)= '$thisyear'";
+		$thisyear_records = $db->query($query);
+
+	}
+
 }else
 if($tab == 'users')
 {
@@ -73,7 +98,7 @@ if($tab == 'users')
 	$offset = $pager->offset;
 
 	$userClass = new User();
-	$users = $userClass->query("select * from users order by id desc limit $limit offset $offset");
+	$users = $userClass->query("SELECT * FROM users ORDER BY id DESC LIMIT $limit OFFSET $offset");
 }
 
 
