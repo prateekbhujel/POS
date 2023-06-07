@@ -188,6 +188,11 @@ function generate_daily_data($datas)
 {	
 	$arr = [];
 
+	// if(!is_array($datas))
+	// {
+	// 	return $arr;;
+	// }
+
 	for ($i=0; $i < 24 ; $i++) 
 	{ 	
 		if(!isset($arr[$i]))

@@ -7,6 +7,7 @@
 	</li>
 </ul>
 <br>
+<!-- For Table Start -->
 <?php if($section == 'table'):?>
 
 		<form>
@@ -97,16 +98,18 @@
 		?>
 
 	</div>
+<!-- For Table Start -->
+
 <?php else:?>
 
-	<h4>Graph View</h4>
-
+<!-- For Graph -->
 	<?php
 		
 		$graph = new Graph();
 
 		$data = generate_daily_data($today_records);
 		$graph->title = "Today's Sales";
+		$graph->Xtitle = "Hour Of The Day";
 		$graph->styles = "width:85%; margin:auto; display: block;";
 		$graph->display($data);
 	?>
@@ -115,6 +118,7 @@
 	<?php
 		$data = generate_monthly_data($thismonth_records);
 		$graph->title = "This month's Sales";
+		$graph->Xtitle = "Days Of The Month";
 		$graph->styles = "width:85%; margin:auto; display: block;";
 		$graph->display($data);
 	?>
@@ -123,15 +127,10 @@
 	<?php
 		$data = generate_yearly_data($thismonth_records);
 		$graph->title = "This Year's Sales";
+		$graph->Xtitle = "Month Of The Year";
 		$graph->styles = "width:85%; margin:auto; display: block;";
 		$graph->display($data);
 	?>
-	<br>
-
-	<?php
-		// show($data);
-		show($thismonth_records);
-		show($thisyear_records);
-	?>
+<!--End For Graph -->
 	
 <?php endif;?>

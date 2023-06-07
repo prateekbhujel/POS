@@ -11,6 +11,7 @@ class Graph
 	public $font_size = 16;
 	public $styles = "";
 	public $title = "Graph Title";
+	public $Xtitle = "Title X";
 
 	public function display($data)
 	{
@@ -45,7 +46,7 @@ class Graph
 
 		?>
 
-		<svg viewBox="0 -<?=$extraY?> <?=$canvasX + $extraX?> <?=$canvasY + ($extraY * 2)?>" class="border" style="width:100%;<?=$this->styles?>">
+		<svg viewBox="0 -<?=$extraY?> <?=$canvasX + $extraX?> <?=$canvasY + ($extraY * 2.5)?>" class="border" style="width:100%;<?=$this->styles?>">
 		
 			<!-- top to bottom lines-->
 			<?php 
@@ -92,7 +93,10 @@ class Graph
 				foreach ($data as $key => $value) {
 					
 				?>
-					<circle cx="<?=$multiplierX*$num?>" cy="<?=$canvasY - ($value*$multiplierY)?>" r="8" style="fill:grey;stroke: white;stroke-width:2" />
+					<circle cx="<?=$multiplierX*$num?>" cy="<?=$canvasY - ($value*$multiplierY)?>" r="6" style="fill:grey;stroke: white;stroke-width:2" />
+				<?php if($value != 0):?>
+					<text x="<?=$multiplierX*$num?>" y="<?=$canvasY - ($value*$multiplierY) + 18?>"style="font-size:16px;"><?=$value?></text>
+				<?php endif;?>
 				<?php 
 					$num++;
 				}
@@ -129,9 +133,18 @@ class Graph
 
 			?>
 			<!-- Graph Title -->
-			<text x = "10" y = "<?=-($extraY / 2)?>">
+			<text x = "10" y = "<?=-($extraY / 2.9)?>" style="font-size:24px">
 				<?=$this->title?>
 			</text>
+
+			<!-- X-Axis  Title -->
+			<?php
+				$textoffset = (strlen($this->Xtitle) / 2) * 10 ;
+			?>
+			<text x = "<?=($canvasX/2) - $textoffset?>" y = "<?=($canvasY+$extraY+12)?>" style="font-size:20px">
+				<?=$this->Xtitle?>
+			</text>
+
 		</svg>
 
 		<?php 

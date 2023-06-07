@@ -99,6 +99,28 @@ if($tab == 'users')
 
 	$userClass = new User();
 	$users = $userClass->query("SELECT * FROM users ORDER BY id DESC LIMIT $limit OFFSET $offset");
+}else
+if($tab == 'dashboard')
+{
+	$db = new Database();
+	
+	// For Total Users
+	$query = "SELECT COUNT(id) AS total FROM users";
+
+	$myusers = $db->query($query);
+	$total_users = $myusers[0]['total'];
+
+	//For Total Products
+	$query = "SELECT COUNT(id) AS total FROM products";
+
+	$myproducts = $db->query($query);
+	$total_products = $myproducts[0]['total'];
+
+	//For Total Sales
+	$query = "SELECT SUM(total) AS total FROM sales";
+
+	$mysales = $db->query($query);
+	$total_sales = $mysales[0]['total'];
 }
 
 
