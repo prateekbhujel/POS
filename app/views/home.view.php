@@ -86,6 +86,7 @@
 	var BARCODE 	= false;
 	var GTOTAL 		= 0;
 	var CHANGE 		= 0;
+	var RECEIPT_WINDOW = null;
 
 	var main_input = document.querySelector(".js-search");
 
@@ -414,6 +415,15 @@
 			data_type:"checkout",
 			text:ITEMS_NEW
 		});
+		
+		//open receipt page
+		print_receipt({
+			company:'My POS',
+			amount:amount,
+			change:CHANGE,
+			gtotal:GTOTAL,
+			data:ITEMS
+		});
 
 		//Clearning Items Cart
 		ITEMS = [];
@@ -425,6 +435,17 @@
 			text:""
 		});
 	}
+
+	function print_receipt(obj)
+	{
+		var vars = JSON.stringify(obj);
+		RECEIPT_WINDOW = window.open('index.php?pg=print&data='+vars,'printpage',"width=500px;");
+
+		setTimeout(function(){
+			RECEIPT_WINDOW.close()
+		}, 1000);
+	}
+
 	send_data({
 
 		data_type:"search",

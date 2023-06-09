@@ -2,7 +2,7 @@
 
 session_start();
 
-define("ABSPATH", true);
+define("ABSPATH", __DIR__);
 
 require "../app/core/init.php";
 
