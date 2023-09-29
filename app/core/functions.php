@@ -1,177 +1,266 @@
-<?php
+<?php 
 
 
-    function dd($value)
-    {
-        echo"<pre>";
-        print_r($value);
-        echo"</pre>";
-        die();
-    }
+function show($data)
+{
+	echo "<pre>";
+	print_r($data);
+	echo "</pre>";
+}
 
-    function show($stuff)
-    {
-        echo"<pre>";
-        print_r($stuff);
-        echo"</pre>";
-    }
-    function views_path($view)
-    {
-        if(file_exists("../app/views/$view.view.php"))
-        {
-            return "../app/views/$view.view.php";
-        }else
-        {
-            echo"View '$view' not found";
-        }
-    }
+function views_path($view)
+{
+	if(file_exists("../app/views/$view.view.php")){
+		return "../app/views/$view.view.php";
+	}else{
+		echo "view '$view' not found";
+	}
+}
 
+function esc($str)
+{
+	return htmlspecialchars($str);
+}
 
-    function esc($str)
-    {
-        return htmlspecialchars($str);
-    }
+function redirect($page)
+{
+
+	header("Location: index.php?pg=" .$page);
+	die;
+}
 
 
-    function db_connect()
-    {
-        $DBNAME = "pos_db"; 
-        $DBHOST = "localhost"; 
-        $DBUSER  = "root";
-        $DBPASS  = "";
-        $DBDRIVER = "mysql";
 
-        try{
+function set_value($key,$default = "")
+{
 
-            $con = new PDO("$DBDRIVER:host=$DBHOST;dbname=$DBNAME",$DBUSER, $DBPASS);
-        }
-        catch(PDOException $e)
-        {
-            
+	if(!empty($_POST[$key]))
+	{
+		return $_POST[$key];
+	}
 
-            echo $e->getMessage();
-        }
-        
-        return $con; 
+	return $default;
+}
 
-    }
+function authenticate($row)
+{
 
-    function query($query, $data = array() )
-    {
-        $con = db_connect();
-        $smt = $con->prepare($query);
-        $check = $smt->execute($data);
+	$_SESSION['USER'] = $row;
+}
 
-        if($check)
-        {
-            $result = $smt->fetchAll(PDO::FETCH_ASSOC);
-            
-            if(is_array($result) && count($result) > 0)
-            {
+function auth($column)
+{
+	if(!empty($_SESSION['USER'][$column])){
+		return $_SESSION['USER'][$column];
+	}
 
-                return $result;
-            }
-        }
+	return "Unknown";
+}
 
-        return false;
-    }
+function crop($filename,$size = 400,$type = 'product')
+{
 
-    function allowed_columns($data, $table)
-    {
-        if($table == 'users')
-        {
-            $columns = [
-                'username',
-                'email',
-                'password',
-                'role',
-                'image',
-                'date',
-            ];
+	$ext = strtolower(pathinfo($filename,PATHINFO_EXTENSION));
+	$cropped_file = preg_replace("/\.$ext$/", "_cropped.".$ext, $filename);
 
-            foreach ($data as $key => $value) 
-            {
-                if(!in_array($key, $columns))
-                {
-                    unset($data[$key]);
-                }
-            }
-            
-            return $data;
-        }
-    }
+	//if cropped file already exists
+	if(file_exists($cropped_file))
+	{
+		return $cropped_file;
+	}
 
-    function insert($data, $table)
-    {
-        
-            
-        $clean_array = allowed_columns($data, $table);
-        $keys = array_keys($clean_array);
+	//if file to be cropped does not exist
+	if(!file_exists($filename))
+	{
+		if($type == "male"){
+			return 'assets/images/user_male.jpg';
+		}else
+		if($type == "female"){
+			return 'assets/images/user_female.jpg';
+		}else{
+			return 'assets/images/no_image.jpg';
+		}
+	}
 
-        $query = "insert into $table";
-        $query .= "(".implode(",", $keys).") values ";
-        $query .= "( :".implode(", :", $keys).")";
+	
+	//create image resource
+	switch ($ext) {
+		case 'jpg':
+		case 'jpeg':
+			$src_image = imagecreatefromjpeg($filename);
+			break;
+		
+		case 'gif':
+			$src_image = imagecreatefromgif($filename);
+			break;
+		
+		case 'png':
+			$src_image = imagecreatefrompng($filename);
+			break;
+		
+		default:
+			return $filename;
+			break;
+	}
 
-        query($query, $clean_array);
-    }    
-    
-    function validate($data, $table)
-    {
+	//set cropping params
 
-        $errors = [];
+	//assign values
+	$dst_x = 0;
+	$dst_y = 0;
+	$dst_w = (int)$size;
+	$dst_h = (int)$size;
 
-        if($table == 'users')
-        {
-    
-            //Check Username
-            if(empty($data['username']))
-            {
-                $errors['username'] = "Username is required";
-            }else
-            if(!preg_match('/[a-zA-Z ]/', $data['username']))
-            {
-                $errors['username'] ="only letters and spaces allowed in username";
-            }
+	$original_width = imagesx($src_image);
+	$original_height = imagesy($src_image);
+
+	if($original_width < $original_height)
+	{
+		$src_x = 0;
+		$src_y = ($original_height - $original_width) / 2;
+		$src_w = $original_width;
+		$src_h = $original_width;
+
+	}else{
+
+		$src_y = 0;
+		$src_x = ($original_width - $original_height) / 2;
+		$src_w = $original_height;
+		$src_h = $original_height;
+	}
+ 
+	$dst_image = imagecreatetruecolor((int)$size, (int)$size);
+	imagecopyresampled($dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
+
+	//save final image
+	switch ($ext) {
+		case 'jpg':
+		case 'jpeg':
+			imagejpeg($dst_image,$cropped_file,90);
+			break;
+		
+		case 'gif':
+			imagegif($dst_image,$cropped_file);
+			break;
+		
+		case 'png':
+			imagepng($dst_image,$cropped_file);
+			break;
+		
+		default:
+			return $filename;
+			break;
+	}
+
+	imagedestroy($dst_image);
+	imagedestroy($src_image);
+
+	return $cropped_file;
+}
+
+function get_receipt_no()
+{
+	$num = 1 ;
+
+	$db = new Database();
+	$rows = $db->query("select receipt_no from sales order by id desc limit 1");
+	
+	if(is_array($rows))
+	{
+		$num = (int)$rows[0]['receipt_no'] + 1;
+	}
+
+	return $num;
+}
+
+function get_date($data)
+{
+	return date("jS M, Y", strtotime($data));
+}
+
+function get_user_by_id($id)
+{
+	$user = new User();
+	return $user->first(['id'=>$id]);
+}
+
+function generate_daily_data($datas)
+{	
+	$arr = [];
+
+	// if(!is_array($datas))
+	// {
+	// 	return $arr;;
+	// }
+
+	for ($i=0; $i < 24 ; $i++) 
+	{ 	
+		if(!isset($arr[$i]))
+		{
+			$arr[$i] = 0;
+		}
+
+		foreach ($datas as $row) 
+		{
+			$hour = date('H', strtotime($row['date']));
+
+			if($hour == $i){
+					
+				$arr[$i] = $row['total'];
+			}
+		}
+	}
+
+	return $arr;
+}
 
 
-             //Check Email
-             if(empty($data['email']))
-             {
-                 $errors['email'] = "Email is required";
-             }else
-             if(!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
-             {
-                 $errors['email'] ="Email-Address Is Not Valid";
-             }
+function generate_monthly_data($datas)
+{
+	$arr = [];
+	$totalDaysInMonth = cal_days_in_month(CAL_GREGORIAN, date("m"), date("Y"));
 
+	for ($i=1; $i <= $totalDaysInMonth ; $i++) 
+	{ 	
+		if(!isset($arr[$i]))
+		{
+			$arr[$i] = 0;
+		}
 
-              //Check Password
-            if(empty($data['password']))
-            {
-                $errors['password'] = "Password is required";
-            }else
-            if($data['password'] !== $data['password_retype'])
-            {
-                $errors['password_retype'] ="Password Do not match Please Retype !";
-            }else
-            if(strlen($data['password']) < 8 || !preg_match('/[A-Z]/', $data['password']) || !preg_match('/[0-9]/', $data['password']))
-            {
-                $errors['password'] = 'Password must have one Uppercase and at least one Number';
-            }
-            
+		foreach ($datas as $row) 
+		{
+			$day = date('d', strtotime($row['date']));
 
-        }
+			if($day == $i){
+					
+				$arr[$i] = $row['total'];
+			}
+		}
+	}
 
-        return $errors;
-    }
+	return $arr;
+}
 
-    function set_value($key, $default = '')
-    {
-        if(!empty($_POST[$key])) 
-        {
-            return $_POST[$key];
-        }
-    
-        return $default;
-    }
-    
+function generate_yearly_data($datas)
+{
+	$arr = [];
+	$months =['0','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEPT','OCT','NOV','DEC'];
+	for ($i=1; $i < 12 ; $i++) 
+	{ 	
+		if(!isset($arr[$months[$i]]))
+		{
+			$arr[$months[$i]] = 0;
+		}
+
+		foreach ($datas as $row) 
+		{
+			$month = date('m', strtotime($row['date']));
+
+			if($month == $i){
+					
+				$arr[$months[$i]] = $row['total'];
+			}
+		}
+	}
+	return $arr;
+}

@@ -4,7 +4,7 @@
 		
 		<form method="post">
 			<center>
-				<h3><i class="fa fa-user"></i> User Signup</h3>
+				<h3><i class="fa fa-user"></i> Create User</h3>
 				<div><?=esc(APP_NAME)?></div>
 			</center>
 			<br>
@@ -22,6 +22,18 @@
 			  <input value="<?=set_value('email')?>" name="email" type="email" class="form-control  <?=!empty($errors['email']) ? 'border-danger':''?>" id="exampleFormControlInput1" placeholder="name@example.com">
 				<?php if(!empty($errors['email'])):?>
 					<small class="text-danger"><?=$errors['email']?></small>
+				<?php endif;?>
+			</div>
+			
+			<div class="mb-3">
+			  <label for="exampleFormControlInput1" class="form-label">Gender</label>
+				<select name="gender" class="form-control  <?=!empty($errors['gender']) ? 'border-danger':''?>">
+                    <option>-- Please Select Gender --</option>
+                    <option>male</option>
+                    <option>female</option>
+                </select>
+                <?php if(!empty($errors['gender'])):?>
+					<small class="text-danger"><?=$errors['gender']?></small>
 				<?php endif;?>
 			</div>
 
@@ -43,8 +55,11 @@
 			</div>
 
 			<br>
-			<button class="btn btn-primary float-end">Signup</button>
-			<button class="btn btn-danger">Cancel</button>
+			<button class="btn btn-primary float-end">Create</button>
+			
+			<a href="index.php?pg=admin&tab=users">
+				<button class="btn btn-danger">Cancel</button>
+			</a>
 		</form>
 	</div>
 
